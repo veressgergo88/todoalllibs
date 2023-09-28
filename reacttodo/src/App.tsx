@@ -4,7 +4,8 @@ import "./App.css";
 function App() {
   type Task = {
       id: number,
-      thing: string
+      thing: string,
+      completed: boolean
   }
 
   const [task, setTask] = useState("");
@@ -14,12 +15,31 @@ function App() {
     if (task) {
       const newTask: Task = {
         id: allTasks.length + 1,
-        thing: task
+        thing: task,
+        completed: false
       }
       setAllTasks([...allTasks, newTask])
       setTask("")
     }
   };
+
+  const removeTask = (id:number) => {
+    const newAllTasks = allTasks.filter((task) => task.id !== id)
+    
+    const updatedTasks = newAllTasks.map((task, index) => ({
+      ...task,
+      id: index + 1
+  }))
+
+    setAllTasks(updatedTasks)
+  }
+
+  const toggleCompleted = (id:number) => {
+    const updatedTasks = allTasks.map((task) =>
+      task.id === id ? { ...task, completed: !task.completed } : task
+    )
+    setAllTasks(updatedTasks)
+  }
 
   return (
     <>
@@ -36,10 +56,14 @@ function App() {
       <div>
         <ul>
           {allTasks.map((t) => (
-            <li key={t.id}>
+            <li 
+              key={t.id}
+              className={t.completed ? "line-through" : ""}
+            >
+              {t.id}
               {t.thing}
-              <button>OK</button>
-              <button>X</button>
+              <button onClick={() => toggleCompleted(t.id)}>OK</button>
+              <button onClick={() => removeTask(t.id)}>X</button>
             </li>
           ))}
         </ul>
