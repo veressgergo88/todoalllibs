@@ -43,31 +43,40 @@ function App() {
 
   return (
     <>
+    <div className="flex flex-col mx-auto gap-10">
       <h1 className="text-3xl font-bold underline">DO THINGS</h1>
-      <div>
+      <div className="flex gap-5">
         <input
           type="text"
           placeholder="Do Something"
+          className="input w-full max-w-xs"
           value={task}
           onChange={(e) => setTask(e.target.value)}
         />
-        <button onClick={addTask}>Add</button>
+        <button className="btn btn-primary" onClick={addTask}>Add</button>
       </div>
       <div>
         <ul>
           {allTasks.map((t) => (
-            <li 
+            <div 
               key={t.id}
-              className={t.completed ? "line-through" : ""}
+              className="flex justify-between"
             >
-              {t.id}
-              {t.thing}
-              <button onClick={() => toggleCompleted(t.id)}>OK</button>
-              <button onClick={() => removeTask(t.id)}>X</button>
-            </li>
+              <p className="text-2xl pr-3">{t.id}</p>
+              <p className={t.completed ? "text-2xl px-3 line-through" : "text-2xl px-3"}>{t.thing}</p>
+              <div className="flex gap-5">
+                <div>
+                  <button className="btn btn-success btn-circle" onClick={() => toggleCompleted(t.id)}>OK</button>
+                </div>
+                <div>
+                  <button className="btn btn-square btn-accent" onClick={() => removeTask(t.id)}>X</button>
+                </div>
+              </div>
+            </div>
           ))}
         </ul>
       </div>
+    </div>
     </>
   );
 }
